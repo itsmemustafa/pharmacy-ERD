@@ -1,0 +1,109 @@
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+
+}
+
+model User {
+  id         Int         @id @default(autoincrement())
+  name       String
+  email      String      @unique
+  password   String
+  role       String      @default("user")
+  created_at DateTime    @default(now())
+  purchases  PURCHASES[]
+  sales SALE[]
+}
+
+model Supplier {
+  id              Int                @id @default(autoincrement())
+  name            String
+  email           String             @unique
+  role            String             @default("user")
+  address         String             @default("")
+  created_at      DateTime           @default(now())
+  medicineBatches MEDICINE_BATCHES[]
+  purchases       PURCHASES[]
+}
+
+model Medicine {
+  id                    Int              @id @default(autoincrement())
+  name                  String
+  generic_name          String
+  price_sell            Decimal @db.Decimal(10, 2)  
+  min_quantity          Int
+  requires_prescription Boolean
+  created_at            DateTime         @default(now())
+  purchaseItems         PURCHASE_ITEMS[]
+  saleItems             SALE_ITEMS[]
+  medicineBatches MEDICINE_BATCHES[]
+}
+
+model MEDICINE_BATCHES {
+  id           Int      @id @default(autoincrement())
+  medicine_id  Int
+  medicine Medicine @relation(fields: [medicine_id], references: [id])
+  supplier_id  Int
+  supplier     Supplier @relation(fields: [supplier_id], references: [id])
+  batch_number String
+  quantity     Int
+  price_buy    Decimal @db.Decimal(10, 2)
+  expiry_Date  DateTime
+  created_at   DateTime @default(now())
+
+  purchaseItems PURCHASE_ITEMS[]
+  saleItems     SALE_ITEMS[]
+}
+
+model PURCHASES {
+  id            Int              @id @default(autoincrement())
+  user_id       Int
+  user          User             @relation(fields: [user_id], references: [id])
+  supplier_id   Int
+  supplier      Supplier         @relation(fields: [supplier_id], references: [id])
+  total_amount  Decimal @db.Decimal(10, 2)
+  purchase_date DateTime         @default(now())
+  purchaseItems PURCHASE_ITEMS[]
+}
+
+model PURCHASE_ITEMS {
+  id          Int              @id @default(autoincrement())
+  purchase_id Int
+  purchase    PURCHASES        @relation(fields: [purchase_id], references: [id])
+  medicine_id Int
+  medicine    Medicine         @relation(fields: [medicine_id], references: [id])
+  batch_id    Int
+  batch       MEDICINE_BATCHES @relation(fields: [batch_id], references: [id])
+  quantity    Int
+  unit_price  Decimal @db.Decimal(10, 2)
+  subtotal    Decimal @db.Decimal(10, 2)
+}
+
+model SALE {
+  id             Int      @id @default(autoincrement())
+  user_id        Int
+  user User @relation(fields: [user_id], references: [id])
+  total_amount   Decimal @db.Decimal(10, 2)
+  payment_method String   @default("cash")
+  created_at     DateTime @default(now())
+
+  saleItems SALE_ITEMS[]
+}
+
+model SALE_ITEMS {
+  id          Int              @id @default(autoincrement())
+  sale_id     Int
+  sale        SALE             @relation(fields: [sale_id], references: [id])
+  medicine_id Int
+  medicine    Medicine         @relation(fields: [medicine_id], references: [id])
+  batch_id    Int
+  batch       MEDICINE_BATCHES @relation(fields: [batch_id], references: [id])
+  quantity    Int
+  unit_price  Decimal @db.Decimal(10, 2)
+  subtotal    Decimal @db.Decimal(10, 2)
+}
