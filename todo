@@ -1,2 +1,6 @@
+db/
 - add indexes to db 
+- add cascade/restricted to fk in schema 
 
+//auth
+- pass strength 
