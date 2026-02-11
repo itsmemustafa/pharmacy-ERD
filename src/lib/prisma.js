@@ -1,12 +1,15 @@
-// db.js
-import { PrismaClient } from '@prisma/client';
+import 'dotenv/config';
+import { PrismaClient } from '../../generated/prisma/client.ts';
 import { PrismaPg } from '@prisma/adapter-pg';
 
-const connectionString = process.env.DATABASE_URL;
+
+const connectionString = process.env.DIRECT_URL;
+
+if (!connectionString) {
+  throw new Error('DIRECT_URL must be set in .env');
+}
+
 const adapter = new PrismaPg({ connectionString });
-
-const prisma = global.prisma || new PrismaClient({ adapter, log: ['query', 'error', 'warn'], });
-
-if (process.env.NODE_ENV !== 'production') global.prisma = prisma;
+const prisma = new PrismaClient({ adapter });
 
 export default prisma;

@@ -16,10 +16,13 @@ app.use(cors());
 app.use(express.json());        
 app.use(morgan('dev'));        
 app.use(cookieParser());
-//errors 
-app.use(errorHandlerMiddleware);
+
 // Routes
 app.use('/api/v1/auth',auth)
+
+
+//errors 
+app.use(errorHandlerMiddleware);
 // route not found 
 app.use(notFound);
 const startServer = async () => {
