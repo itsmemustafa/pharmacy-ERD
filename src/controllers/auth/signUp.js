@@ -6,7 +6,7 @@ import generateRefreshToken from "../../utils/refresh-token.js";
 import { StatusCodes } from "http-status-codes";
 
 const signUp = async (req, res) => {
-  try {
+
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
@@ -59,9 +59,7 @@ const signUp = async (req, res) => {
     });
 
     res.status(StatusCodes.CREATED).json({ message: "User created" });
-  } catch (error) {
-    throw error;
-  }
+  
 };
 
 export default signUp;
