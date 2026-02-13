@@ -20,7 +20,7 @@ app.use(cookieParser());
 // Routes
 app.use('/api/v1/auth',auth)
 
-
+app.get("/favicon.ico", (req, res) => res.status(204).end());
 //errors 
 app.use(errorHandlerMiddleware);
 // route not found 
