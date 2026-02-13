@@ -1,16 +1,23 @@
 import crypto from "crypto";
+import prisma from "../lib/prisma.js"; // Add this import
 
-const GenerateVerificationToken = async (user) => { 
-const token = crypto.randomBytes(32).toString("hex");
+const GenerateVerificationToken = async (user) => {
+  const token = crypto.randomBytes(32).toString("hex");
 
-user.verificationToken = crypto
-  .createHash("sha256")
-  .update(token)
-  .digest("hex");
+  const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
-user.verificationTokenExpiry = Date.now() + 1000 * 60 * 60; // 1 hour
+  const verificationExpires = new Date(Date.now() + 1000 * 60 * 60); // 1 hour
 
-return token;
+  // Save to database
+  await prisma.user.update({
+    where: { id: user.id },
+    data: {
+      verificationToken: hashedToken,
+      verificationExpires: verificationExpires,
+    },
+  });
+
+  return token;
 };
 
 export default GenerateVerificationToken;

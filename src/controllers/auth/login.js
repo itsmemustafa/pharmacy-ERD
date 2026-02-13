@@ -1,7 +1,7 @@
 import prisma from "../../lib/prisma.js";
 import {CustomAPIError, UnauthenticatedError} from "../../errors/index.js";
 import bcrypt from "bcryptjs";
-import token from "../../utils/jwt-sign.js";
+import signJwt from "../../utils/jwt-sign.js";
 import generateRefreshToken from "../../utils/refresh-token.js";
 import { StatusCodes } from "http-status-codes";
 
@@ -16,13 +16,16 @@ const login = async(req, res) => {
   if(!user) {
     throw new UnauthenticatedError("Invalid credentials");
   }
-
+  // Check if email is verified
+  if(!user.isVerified) {
+    throw new CustomAPIError("Please verify your email before logging in");
+  }
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if(!isPasswordValid) {
     throw new UnauthenticatedError("Invalid credentials");
   }
 
-  const accessToken = token(user.name, email);
+  const accessToken = signJwt(user.id, user.name, user.email, user.role);
   const { refreshToken, hashedToken, refreshTokenExpiry } = generateRefreshToken();
 
   // Update or create refresh token
