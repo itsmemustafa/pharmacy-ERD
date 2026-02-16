@@ -34,8 +34,8 @@ model Token {
 model Supplier {
   id              Int                @id @default(autoincrement())
   name            String
+  phone           String @unique
   email           String             @unique
-  role            String             @default("user")
   address         String             @default("")
   created_at      DateTime           @default(now())
   medicineBatches MEDICINE_BATCHES[]
@@ -48,7 +48,7 @@ model Medicine {
   generic_name          String
   price_sell            Decimal            @db.Decimal(10, 2)
   min_quantity          Int
-  requires_prescription Boolean
+  requires_prescription Boolean @default(false)
   created_at            DateTime           @default(now())
   medicineBatches       MEDICINE_BATCHES[]
   purchaseItems         PURCHASE_ITEMS[]
