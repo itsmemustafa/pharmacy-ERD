@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import prisma from "../../lib/prisma.js";
 import {CustomAPIError} from "../../errors/index.js";
-const getAllSuppliers = async (req, res, next) => {
+const getAllSuppliers = async (req, res) => {
 
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;

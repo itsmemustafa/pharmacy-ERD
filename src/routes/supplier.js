@@ -8,8 +8,8 @@ const router = Router();
 
 router.get("/", getAllSuppliers);
 router.post("/", AddSupplier);
-router.get("/:id",getSupplier);
-router.post("/:id", deleteSupplier);
+router.get("/:id", getSupplier);
+router.delete("/:id", deleteSupplier);
 router.patch("/:id", updateSupplier);
 
 export default router;

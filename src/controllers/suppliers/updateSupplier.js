@@ -1,26 +1,41 @@
 import prisma from "../../lib/prisma.js";
-import { StatusCodes } from "http-status-codes";
 import { CustomAPIError } from "../../errors/index.js";
-const updateSupplier = async (req, res) => {
+import { StatusCodes } from "http-status-codes";
+
+const updateMedicine = async (req, res) => {
   const { id } = req.params;
 
-  const existingSupplier = await prisma.supplier.findUnique({
-    where: { id: Number(id) },
-  });
-  if (!existingSupplier) {
+  // Validate that there's data to update
+  if (!req.body || Object.keys(req.body).length === 0) {
     throw new CustomAPIError(
-      "can't find Supplier with this id",
-      StatusCodes.NOT_FOUND,
+      "No data provided for update",
+      StatusCodes.BAD_REQUEST
     );
   }
 
-  const updatedSupplier = await prisma.supplier.update({
+  const existingMedicine = await prisma.medicine.findUnique({
     where: { id: Number(id) },
-    data: { ...req.body },
   });
 
-  res
-    .status(StatusCodes.OK)
-    .json({ msg: "supplier updated successfully ", data: updateSupplier });
+  if (!existingMedicine) {
+    throw new CustomAPIError(
+      `Can't find medicine with id ${id}`,
+      StatusCodes.NOT_FOUND
+    );
+  }
+
+  // Remove id from body if present to prevent updating it
+  const { id: _, ...updateData } = req.body;
+
+  const updatedMedicine = await prisma.medicine.update({
+    where: { id: Number(id) },
+    data: updateData,
+  });
+
+  res.status(StatusCodes.OK).json({
+    msg: "Medicine updated successfully",
+    medicine: updatedMedicine
+  });
 };
-export default updateSupplier;
+
+export default updateMedicine;
