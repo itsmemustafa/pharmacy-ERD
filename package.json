@@ -11,6 +11,9 @@
     "start": "nodemon app.js",
     "postinstall": "prisma generate"
   },
+  "prisma": {
+    "seed": "node seed.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
