@@ -17,3 +17,6 @@ Natural language medicine search ("something for headache and fever")
 Suggest alternative generics when brand isn't available
 Recommend complementary medicines based on purchase patterns
 
+todo: 
+reporting system 
+notification system websocket 
