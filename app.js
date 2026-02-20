@@ -11,6 +11,7 @@ import auth from "./src/routes/auth.js";
 import supplier from "./src/routes/supplier.js";
 import Medicine from "./src/routes/Medicine.js";
 import purchas from "./src/routes/purchas.js";
+import sale from "./src/routes/sale.js";
 dotenv.config();
 const app = express();
 // Middleware
@@ -25,7 +26,7 @@ app.use("/api/v1/auth", auth);
 app.use("/api/v1/suppliers", supplier);
 app.use("/api/v1/medicine", Medicine);
 app.use("/api/v1/purchas", purchas);
-
+app.use("/api/v1/sale", sale);
 app.get("/favicon.ico", (req, res) => res.status(204).end());
 //errors
 app.use(errorHandlerMiddleware);

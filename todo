@@ -1,7 +1,7 @@
 db/
 - add indexes to db 
 - add cascade/restricted to fk in schema 
-
+- add index for expire date in medicin_batch   
 auth/
 - password reset 
 

@@ -116,3 +116,21 @@ model SALE_ITEMS {
   medicine    Medicine         @relation(fields: [medicine_id], references: [id])
   sale        SALE             @relation(fields: [sale_id], references: [id])
 }
+// {
+//   
+//   "payment_method": "cash",
+//   "items": [
+//     {
+//       "medicine_id": 5,
+//       "batch_id": 12,
+//       "quantity": 2,
+//       "unit_price": 3.50
+//     },
+//     {
+//       "medicine_id": 8,
+//       "batch_id": 20,
+//       "quantity": 1,
+//       "unit_price": 10.00
+//     }
+//   ]
+// }
