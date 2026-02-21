@@ -453,6 +453,43 @@ async function main() {
 
   console.log(`Created ${batches.length} medicine batches`);
 
+  // Create Expired Medicine Batches
+  const expiredBatches = [];
+  const expiredBatchCount = 15; // Create 15 expired batches
+
+  for (let i = 0; i < expiredBatchCount; i++) {
+    const medicine = medicines[Math.floor(Math.random() * medicines.length)];
+    const supplier = suppliers[Math.floor(Math.random() * suppliers.length)];
+    
+    // Create batches expired at different times:
+    // - Recently expired (1-30 days ago)
+    // - Moderately expired (1-6 months ago)
+    // - Long expired (6-12 months ago)
+    const expiredDaysAgo = i < 5 
+      ? Math.floor(Math.random() * 30) + 1  // Recently expired (1-30 days)
+      : i < 10
+      ? Math.floor(Math.random() * 150) + 30  // Moderately expired (1-5 months)
+      : Math.floor(Math.random() * 180) + 180; // Long expired (6-12 months)
+    
+    const priceBuy = parseFloat(medicine.price_sell) * (0.4 + Math.random() * 0.3);
+    
+    expiredBatches.push(
+      await prisma.mEDICINE_BATCHES.create({
+        data: {
+          medicine_id: medicine.id,
+          supplier_id: supplier.id,
+          batch_number: `EXP${String(i + 1).padStart(6, '0')}`, // EXP prefix for expired batches
+          quantity: Math.floor(Math.random() * 200) + 20, // Smaller quantities for expired batches
+          price_buy: priceBuy.toFixed(2),
+          expiry_Date: new Date(Date.now() - expiredDaysAgo * 24 * 60 * 60 * 1000), // Expired in the past
+          created_at: new Date(Date.now() - (expiredDaysAgo + 60) * 24 * 60 * 60 * 1000), // Created before expiry
+        },
+      })
+    );
+  }
+
+  console.log(`Created ${expiredBatches.length} expired medicine batches`);
+
   // Create Purchases
   const purchases = [];
   const purchaseCount = 25;
@@ -584,6 +621,8 @@ async function main() {
   console.log(`Suppliers: ${suppliers.length}`);
   console.log(`Medicines: ${medicines.length}`);
   console.log(`Medicine Batches: ${batches.length}`);
+  console.log(`Expired Batches: ${expiredBatches.length}`);
+  console.log(`Total Batches: ${batches.length + expiredBatches.length}`);
   console.log(`Purchases: ${purchases.length}`);
   console.log(`Purchase Items: ${purchaseItems.length}`);
   console.log(`Sales: ${sales.length}`);
