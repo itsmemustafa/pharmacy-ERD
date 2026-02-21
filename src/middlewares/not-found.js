@@ -1,6 +1,7 @@
 import { StatusCodes } from "http-status-codes";
-const notFound =(req,res,next)=>{
 
-    return res.json({msg:"Rout does not exist"}).status(StatusCodes.NOT_FOUND);
-}
+const notFound = (req, res, next) => {
+  return res.status(StatusCodes.NOT_FOUND).json({ msg: "Route does not exist" });
+};
+
 export default notFound;
