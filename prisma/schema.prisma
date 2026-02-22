@@ -8,24 +8,24 @@ datasource db {
 }
 
 model User {
-  id         Int         @id @default(autoincrement())
-  name       String
-  email      String      @unique
-  password   String
-  role       String      @default("user")
-    isVerified            Boolean     @default(false)
-  verificationToken     String?     @unique
-  verificationExpires   DateTime?
-  created_at DateTime    @default(now())
-  purchases  PURCHASES[]
-  sales      SALE[]
-  token      Token[]
+  id                  Int         @id @default(autoincrement())
+  name                String
+  email               String      @unique
+  password            String
+  role                String      @default("user")
+  created_at          DateTime    @default(now())
+  isVerified          Boolean     @default(false)
+  verificationExpires DateTime?
+  verificationToken   String?     @unique
+  purchases           PURCHASES[]
+  sales               SALE[]
+  token               Token?
 }
 
 model Token {
   id        Int      @id @default(autoincrement())
   token     String
-  userId    Int @unique
+  userId    Int      @unique
   expiresAt DateTime
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -34,22 +34,23 @@ model Token {
 model Supplier {
   id              Int                @id @default(autoincrement())
   name            String
-  phone           String @unique
   email           String             @unique
   address         String             @default("")
   created_at      DateTime           @default(now())
+  phone           String             @unique
   medicineBatches MEDICINE_BATCHES[]
   purchases       PURCHASES[]
 }
 
 model Medicine {
-  id                    Int                @id @default(autoincrement())
+  id                    Int                    @id @default(autoincrement())
   name                  String
   generic_name          String
-  price_sell            Decimal            @db.Decimal(10, 2)
+  price_sell            Decimal                @db.Decimal(10, 2)
   min_quantity          Int
-  requires_prescription Boolean @default(false)
-  created_at            DateTime           @default(now())
+  requires_prescription Boolean                @default(false)
+  created_at            DateTime               @default(now())
+  embedding             Unsupported("vector")?
   medicineBatches       MEDICINE_BATCHES[]
   purchaseItems         PURCHASE_ITEMS[]
   saleItems             SALE_ITEMS[]
@@ -116,21 +117,3 @@ model SALE_ITEMS {
   medicine    Medicine         @relation(fields: [medicine_id], references: [id])
   sale        SALE             @relation(fields: [sale_id], references: [id])
 }
-// {
-//   
-//   "payment_method": "cash",
-//   "items": [
-//     {
-//       "medicine_id": 5,
-//       "batch_id": 12,
-//       "quantity": 2,
-//       "unit_price": 3.50
-//     },
-//     {
-//       "medicine_id": 8,
-//       "batch_id": 20,
-//       "quantity": 1,
-//       "unit_price": 10.00
-//     }
-//   ]
-// }
