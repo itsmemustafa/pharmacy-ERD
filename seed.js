@@ -1,5 +1,6 @@
 import prisma from './src/lib/prisma.js';
 import bcrypt from 'bcryptjs';
+import generateEmbedding from './src/lib/embedding_supbase.js';
 
 
 async function main() {
@@ -425,6 +426,61 @@ async function main() {
   ]);
 
   console.log(`Created ${medicines.length} medicines`);
+
+  // Generate and set embeddings for each medicine (for semantic search)
+  if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY) {
+    console.log('Generating embeddings for medicines...');
+    
+    // Ensure the embedding column is vector(384) to match Supabase gte-small model
+    // PostgreSQL doesn't allow direct conversion between vector dimensions, so we need to drop and recreate
+    try {
+      // Check if column exists and drop it if it has wrong dimensions
+      await prisma.$executeRaw`
+        DO $$ 
+        BEGIN
+          IF EXISTS (
+            SELECT 1 FROM information_schema.columns 
+            WHERE table_name = 'Medicine' AND column_name = 'embedding'
+          ) THEN
+            ALTER TABLE "Medicine" DROP COLUMN embedding;
+          END IF;
+        END $$;
+      `;
+      // Create column with correct dimensions
+      await prisma.$executeRaw`
+        ALTER TABLE "Medicine" ADD COLUMN embedding vector(384)
+      `;
+      console.log('  Set embedding column to vector(384)');
+    } catch (err) {
+      // Column might already be correct, try to create if missing
+      try {
+        await prisma.$executeRaw`
+          ALTER TABLE "Medicine" ADD COLUMN IF NOT EXISTS embedding vector(384)
+        `;
+      } catch (createErr) {
+        console.log('  Note: Could not alter embedding column:', createErr.message);
+        console.log('  Attempting to update with explicit cast...');
+      }
+    }
+    
+    for (let i = 0; i < medicines.length; i++) {
+      const medicine = medicines[i];
+      try {
+        const text = `${medicine.name} ${medicine.generic_name}`;
+        const embedding = await generateEmbedding(text);
+        const embeddingStr = `[${embedding.join(',')}]`;
+        await prisma.$executeRaw`
+          UPDATE "Medicine" SET embedding = ${embeddingStr}::vector(384) WHERE id = ${medicine.id}
+        `;
+        if ((i + 1) % 10 === 0) console.log(`  Embedded ${i + 1}/${medicines.length} medicines`);
+      } catch (err) {
+        console.warn(`  Skipped embedding for medicine id ${medicine.id} (${medicine.name}):`, err.message);
+      }
+    }
+    console.log(`Embeddings updated for medicines`);
+  } else {
+    console.log('Skipping embeddings (SUPABASE_URL or SUPABASE_SERVICE_KEY not set)');
+  }
 
   // Create Medicine Batches
   const batches = [];
