@@ -1,6 +1,7 @@
 import prisma from './src/lib/prisma.js';
 import bcrypt from 'bcryptjs';
 import generateEmbedding from './src/lib/embedding_supbase.js';
+import { ROLES } from './src/constants/roles.js';
 
 
 async function main() {
@@ -19,16 +20,16 @@ async function main() {
 
   console.log('Cleared existing data');
 
-  // Create Users
+  // Create Users (roles must match src/constants/roles.js: admin, pharmacist, cashier)
   const hashedPassword = await bcrypt.hash('password123', 10);
-  
+
   const users = await Promise.all([
     prisma.user.create({
       data: {
         name: 'John Anderson',
         email: 'john.anderson@pharmacy.com',
         password: hashedPassword,
-        role: 'admin',
+        role: ROLES.ADMIN,
         isVerified: true,
       },
     }),
@@ -37,7 +38,7 @@ async function main() {
         name: 'Sarah Mitchell',
         email: 'sarah.mitchell@pharmacy.com',
         password: hashedPassword,
-        role: 'pharmacist',
+        role: ROLES.PHARMACIST,
         isVerified: true,
       },
     }),
@@ -46,7 +47,7 @@ async function main() {
         name: 'Michael Chen',
         email: 'michael.chen@pharmacy.com',
         password: hashedPassword,
-        role: 'pharmacist',
+        role: ROLES.PHARMACIST,
         isVerified: true,
       },
     }),
@@ -55,7 +56,7 @@ async function main() {
         name: 'Emily Rodriguez',
         email: 'emily.rodriguez@pharmacy.com',
         password: hashedPassword,
-        role: 'cashier',
+        role: ROLES.CASHIER,
         isVerified: true,
       },
     }),
@@ -64,10 +65,8 @@ async function main() {
         name: 'David Thompson',
         email: 'david.thompson@pharmacy.com',
         password: hashedPassword,
-        role: 'user',
-        isVerified: false,
-        verificationToken: 'verify_token_12345',
-        verificationExpires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+        role: ROLES.CASHIER,
+        isVerified: true,
       },
     }),
   ]);
