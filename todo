@@ -5,12 +5,12 @@ db/
 auth/
 - password reset 
 
-enhancements/
+enhancements/ 
 - validation (zod or something else)
-- separate the services from the controller 
+- separate the services from the controller (done)
 
 
-AI integration ideas : 
+AI integration ideas : (done)
 
 - Smart Search & Recommendations
 Natural language medicine search ("something for headache and fever")
@@ -18,5 +18,6 @@ Suggest alternative generics when brand isn't available
 Recommend complementary medicines based on purchase patterns
 
 todo: 
-reporting system 
-notification system websocket 
+-reporting system (done)
+-notification system websocket 
+-add user management
