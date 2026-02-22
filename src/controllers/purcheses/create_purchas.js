@@ -1,7 +1,7 @@
 import prisma from "../../lib/prisma.js";
 import purchaseTransaction from "../../services/purchase.js";
 const createPurchase = async (req, res) => {
-  const user_id = req.user.userId;
+  const user_id = req.user.id;
   const { supplier_id, items } = req.body;
 
   if (!supplier_id || !Array.isArray(items) || items.length === 0) {
