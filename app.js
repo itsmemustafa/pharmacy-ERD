@@ -10,9 +10,11 @@ import cookieParser from "cookie-parser";
 import auth from "./src/routes/auth.js";
 import supplier from "./src/routes/supplier.js";
 import Medicine from "./src/routes/Medicine.js";
-import purchas from "./src/routes/purchas.js";
+import purchase from "./src/routes/purchase.js";
 import sale from "./src/routes/sale.js";
-import report from './src/routes/reports.js'
+import report from "./src/routes/reports.js";
+import search from "./src/routes/search.js";
+
 dotenv.config();
 const app = express();
 // Middleware
@@ -26,9 +28,11 @@ app.use(cookieParser());
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/suppliers", supplier);
 app.use("/api/v1/medicine", Medicine);
-app.use("/api/v1/purchas", purchas);
+app.use("/api/v1/purchase", purchase);
 app.use("/api/v1/sale", sale);
-app.use("/api/v1/reports",report);
+app.use("/api/v1/reports", report);
+app.use("/api/v1/search", search);
+
 app.get("/favicon.ico", (req, res) => res.status(204).end());
 //errors
 app.use(errorHandlerMiddleware);

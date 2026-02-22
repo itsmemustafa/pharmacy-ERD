@@ -90,7 +90,7 @@ const getAllMedicines = async (req, res) => {
         price_sell: true,
         min_quantity: true,
         requires_prescription: true,
-        created_at: true,
+       
       },
     }),
 
