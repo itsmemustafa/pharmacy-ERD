@@ -14,10 +14,10 @@ const createTransporter = () => {
 };
 
 // Send verification email
- const sendVerificationEmail = async (email, verificationToken, name) => {
+const sendVerificationEmail = async (email, verificationToken, name) => {
   const transporter = createTransporter();
 
-  const verificationUrl = `localhost:3000/verify-email?token=${verificationToken}`;
+  const verificationUrl = `http://localhost:3000/api/v1/auth/verify-email?token=${verificationToken}`;
 
   const mailOptions = {
     from: `"${process.env.APP_NAME}" <${process.env.EMAIL_USER}>`,
