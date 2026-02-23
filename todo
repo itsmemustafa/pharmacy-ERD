@@ -1,9 +1,4 @@
-db/
 
-- add cascade/restricted to fk in schema
-- add index for expire date in medicin_batch  
-  auth/
-- password reset
 
 AI integration ideas : (done)
 - Smart Search & Recommendations
@@ -11,13 +6,28 @@ AI integration ideas : (done)
   Suggest alternative generics when brand isn't available
   Recommend complementary medicines based on purchase patterns
 
-
 todo:
 -separate the services from the controller (done)
 -reporting system (done)
+- add cascade/restricted to fk in schema
+- add index for expire date in medicin_batch 
+- password reset
 -notification system websocket
 -add user management
 -add testing
 -validation (zod or something else)
 -file upload (csv to medicine )
 -update the readme
+
+
+tools to install: 
+npm i hpp
+app.use(hpp())
+npm i -g clinic
+clinic doctor -- node server.js
+npm i -D tsx
+npm i -D husky lint-staged
+npm i -D eslint prettier eslint-config-prettier
+npm i swagger-jsdoc swagger-ui-express
+pino
+jest
