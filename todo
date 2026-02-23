@@ -1,23 +1,23 @@
 db/
-- add indexes to db 
-- add cascade/restricted to fk in schema 
-- add index for expire date in medicin_batch   
-auth/
-- password reset 
 
-enhancements/ 
-- validation (zod or something else)
-- separate the services from the controller (done)
-
+- add cascade/restricted to fk in schema
+- add index for expire date in medicin_batch  
+  auth/
+- password reset
 
 AI integration ideas : (done)
-
 - Smart Search & Recommendations
-Natural language medicine search ("something for headache and fever")
-Suggest alternative generics when brand isn't available
-Recommend complementary medicines based on purchase patterns
+  Natural language medicine search ("something for headache and fever")
+  Suggest alternative generics when brand isn't available
+  Recommend complementary medicines based on purchase patterns
 
-todo: 
+
+todo:
+-separate the services from the controller (done)
 -reporting system (done)
--notification system websocket 
+-notification system websocket
 -add user management
+-add testing
+-validation (zod or something else)
+-file upload (csv to medicine )
+-update the readme
