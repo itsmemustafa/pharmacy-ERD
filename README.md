@@ -25,6 +25,14 @@ A comprehensive REST API for managing pharmacy operations including medicine inv
   - Expiry date tracking
   - Automatic stock level management
 
+- **Daily Reports**
+  - Low-stock medicines based on configurable `min_quantity`
+  - Near-expiry and expired batches
+
+- **Semantic Search**
+  - Vector-based search over medicine names and generic names
+  - pgvector in PostgreSQL with embeddings generated via Supabase Edge Function
+
 - **Purchase Management**
   - Create purchase orders from suppliers
   - Automatic batch creation
@@ -36,6 +44,12 @@ A comprehensive REST API for managing pharmacy operations including medicine inv
   - Multiple payment methods support
   - Prevents selling expired medicines
   - Stock availability validation
+
+- **Role-Based Access Control (RBAC)**
+  - Roles: **admin**, **pharmacist**, **cashier**
+  - Admin: full access to inventory, suppliers, purchases, sales, reports
+  - Pharmacist: manage medicines/suppliers, create purchases & sales, view reports
+  - Cashier: create sales, view medicines and reports
 
 ## 📋 Prerequisites
 
@@ -160,7 +174,7 @@ managment-project/
 | PATCH | `/:id` | Update medicine | Yes |
 | DELETE | `/:id` | Delete medicine | Yes |
 
-### Purchases (`/api/v1/purchas`)
+### Purchases (`/api/v1/purchase`)
 
 | Method | Endpoint | Description | Auth Required |
 |--------|----------|-------------|---------------|
@@ -215,6 +229,20 @@ managment-project/
   }
 }
 ```
+
+### Reports (`/api/v1/reports`)
+
+| Method | Endpoint | Description | Auth Required (Role) |
+|--------|----------|-------------|-----------------------|
+| GET | `/low_quantity` | List medicines where available stock is below `min_quantity` | Yes (admin, pharmacist, cashier) |
+| GET | `/expired` | List fully expired medicine batches | Yes (admin, pharmacist, cashier) |
+| GET | `/nearExpiry` | List batches that are close to expiring | Yes (admin, pharmacist, cashier) |
+
+### Search (`/api/v1/search`)
+
+| Method | Endpoint | Description | Auth Required (Role) |
+|--------|----------|-------------|-----------------------|
+| GET | `/` | Semantic search over medicines using vector similarity | Yes (admin, pharmacist, cashier) |
 
 ## 🔐 Authentication
 
