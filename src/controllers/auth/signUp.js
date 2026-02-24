@@ -5,7 +5,7 @@ import signJwt from "../../utils/jwt-sign.js";
 import generateRefreshToken from "../../utils/refresh-token.js";
 import { StatusCodes } from "http-status-codes";
 import GenerateVerificationToken from "../../utils/GenerateVerificationToken.js";
-import sendVerificationEmail  from "../../utils/email.js";
+import sendVerificationEmail  from "../../utils/sendVerifyEmail.js";
 import validatePassword from "../../utils/validatePassword.js";
 
 const signUp = async (req, res) => {
