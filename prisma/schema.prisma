@@ -17,6 +17,8 @@ model User {
   isVerified          Boolean     @default(false)
   verificationExpires DateTime?
   verificationToken   String?     @unique
+  resetPasswordToken   String?   @unique
+  resetPasswordExpires DateTime?
   purchases           PURCHASES[]
   sales               SALE[]
   token               Token?
