@@ -19,8 +19,7 @@ import prisma from "../lib/prisma.js";
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Optional: Fetch fresh user data from database
-    // This ensures user still exists and hasn't been banned/deleted
+   
     const user = await prisma.user.findUnique({
       where: { id: decoded.id },
       select: {
