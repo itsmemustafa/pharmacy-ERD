@@ -3,10 +3,9 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import dotenv from "dotenv";
-import prisma from "./src/lib/prisma.js";
+import cookieParser from "cookie-parser";
 import errorHandlerMiddleware from "./src/middlewares/error-handler.js";
 import notFound from "./src/middlewares/not-found.js";
-import cookieParser from "cookie-parser";
 import auth from "./src/routes/auth.js";
 import supplier from "./src/routes/supplier.js";
 import Medicine from "./src/routes/Medicine.js";
@@ -16,7 +15,9 @@ import report from "./src/routes/reports.js";
 import search from "./src/routes/search.js";
 
 dotenv.config();
+
 const app = express();
+
 // Middleware
 app.use(helmet());
 app.use(cors());
@@ -34,20 +35,11 @@ app.use("/api/v1/reports", report);
 app.use("/api/v1/search", search);
 
 app.get("/favicon.ico", (req, res) => res.status(204).end());
-//errors
-app.use(errorHandlerMiddleware);
-// route not found
-app.use(notFound);
-const startServer = async () => {
-  try {
-    await prisma.$connect();
-    console.log("Database connected successfully");
-    app.listen(process.env.PORT, () => {
-      console.log(`Server is running on port ${process.env.PORT}`);
-    });
-  } catch (error) {
-    console.error("Unable to connect to the database:", error);
-  }
-};
 
-startServer();
+// Errors
+app.use(errorHandlerMiddleware);
+
+// Route not found
+app.use(notFound);
+
+export default app; 
