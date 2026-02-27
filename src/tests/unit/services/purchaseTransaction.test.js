@@ -1,9 +1,9 @@
-import purchaseTransaction from "../../services/purchaseTransaction.js";
-import prisma from "../../lib/prisma.js";
+import purchaseTransaction from "../../../services/purchaseTransaction.js";
+import prisma from "../../../lib/prisma.js";
 
 jest.mock("../../lib/prisma.js", () => ({
   __esModule: true,
-  default: {                       
+  default: {
     $transaction: jest.fn(),
   },
 }));

@@ -1,5 +1,5 @@
-import GenerateResetToken from "../../utils/GenerateResetToken.js";
-import prisma from "../../lib/prisma.js";
+import GenerateResetToken from "../../../utils/GenerateResetToken.js";
+import prisma from "../../../lib/prisma.js";
 jest.mock("../../lib/prisma.js", () => ({
   __esModule: true,
   default: { user: { update: jest.fn() } },

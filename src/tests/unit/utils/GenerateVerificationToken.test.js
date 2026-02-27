@@ -1,5 +1,5 @@
-import GenerateVerificationToken from "../../utils/GenerateVerificationToken.js";
-import prisma from "../../lib/prisma.js";
+import GenerateVerificationToken from "../../../utils/GenerateVerificationToken.js";
+import prisma from "../../../lib/prisma.js";
 
 jest.mock("../../lib/prisma.js", () => ({
   __esModule: true,

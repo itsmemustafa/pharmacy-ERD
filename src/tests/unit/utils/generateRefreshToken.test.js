@@ -1,4 +1,4 @@
-import generateRefreshToken from "../../utils/refresh-token";
+import generateRefreshToken from "../../../utils/refresh-token";
 
 describe("generateRefreshToken()", () => {
   it("should return a refreshToken, hashedToken, and expiry", () => {

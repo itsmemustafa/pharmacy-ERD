@@ -1,7 +1,7 @@
 // src/tests/services/processSale.test.js
-import processSale from "../../services/saleTransaction.js";
-import prisma from "../../lib/prisma.js";
-import fulfillFromBatches from "../../utils/fulfillFromBatches.js";
+import processSale from "../../../services/saleTransaction.js";
+import prisma from "../../../lib/prisma.js";
+import fulfillFromBatches from "../../../utils/fulfillFromBatches.js";
 
 jest.mock("../../lib/prisma.js", () => ({
   __esModule: true,
@@ -29,7 +29,7 @@ describe("processSale()", () => {
     };
 
     prisma.$transaction.mockImplementation(async (callback) =>
-      callback(mockTx)
+      callback(mockTx),
     );
   });
 
@@ -70,7 +70,7 @@ describe("processSale()", () => {
         userId: 1,
         payment_method: "cash",
         items: [{ medicine_id: 99, quantity: 2 }],
-      })
+      }),
     ).rejects.toThrow("Medicine(s) with ID(s) 99 not found");
   });
 
@@ -90,7 +90,7 @@ describe("processSale()", () => {
         userId: 1,
         payment_method: "cash",
         items: [{ medicine_id: 1, quantity: 10 }],
-      })
+      }),
     ).rejects.toThrow("Insufficient stock for medicine ID 1");
   });
 

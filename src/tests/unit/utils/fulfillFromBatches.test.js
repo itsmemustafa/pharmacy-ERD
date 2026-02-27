@@ -1,4 +1,4 @@
-import fulfillFromBatches from "../../utils/fulfillFromBatches.js";
+import fulfillFromBatches from "../../../utils/fulfillFromBatches.js";
 
 const mockTx = {
   mEDICINE_BATCHES: {
@@ -16,7 +16,8 @@ describe("fulfillFromBatches()", () => {
       { id: 1, quantity: 100, expiry_Date: new Date("2099-01-01") },
     ]);
     mockTx.mEDICINE_BATCHES.findUnique.mockResolvedValue({
-      quantity: 100, expiry_Date: new Date("2099-01-01"),
+      quantity: 100,
+      expiry_Date: new Date("2099-01-01"),
     });
     mockTx.mEDICINE_BATCHES.update.mockResolvedValue({});
 
@@ -27,12 +28,18 @@ describe("fulfillFromBatches()", () => {
 
   it("should fulfill across multiple batches", async () => {
     mockTx.mEDICINE_BATCHES.findMany.mockResolvedValue([
-      { id: 1, quantity: 5,  expiry_Date: new Date("2099-01-01") },
+      { id: 1, quantity: 5, expiry_Date: new Date("2099-01-01") },
       { id: 2, quantity: 10, expiry_Date: new Date("2099-06-01") },
     ]);
     mockTx.mEDICINE_BATCHES.findUnique
-      .mockResolvedValueOnce({ quantity: 5,  expiry_Date: new Date("2099-01-01") })
-      .mockResolvedValueOnce({ quantity: 10, expiry_Date: new Date("2099-06-01") });
+      .mockResolvedValueOnce({
+        quantity: 5,
+        expiry_Date: new Date("2099-01-01"),
+      })
+      .mockResolvedValueOnce({
+        quantity: 10,
+        expiry_Date: new Date("2099-06-01"),
+      });
     mockTx.mEDICINE_BATCHES.update.mockResolvedValue({});
 
     const result = await fulfillFromBatches(mockTx, 1, 12);
@@ -47,7 +54,7 @@ describe("fulfillFromBatches()", () => {
     mockTx.mEDICINE_BATCHES.findMany.mockResolvedValue([]);
 
     await expect(fulfillFromBatches(mockTx, 1, 10)).rejects.toThrow(
-      "No available stock for medicine ID 1"
+      "No available stock for medicine ID 1",
     );
   });
 
@@ -56,12 +63,13 @@ describe("fulfillFromBatches()", () => {
       { id: 1, quantity: 5, expiry_Date: new Date("2099-01-01") },
     ]);
     mockTx.mEDICINE_BATCHES.findUnique.mockResolvedValue({
-      quantity: 5, expiry_Date: new Date("2099-01-01"),
+      quantity: 5,
+      expiry_Date: new Date("2099-01-01"),
     });
     mockTx.mEDICINE_BATCHES.update.mockResolvedValue({});
 
     await expect(fulfillFromBatches(mockTx, 1, 20)).rejects.toThrow(
-      "Insufficient stock available for medicine ID 1"
+      "Insufficient stock available for medicine ID 1",
     );
   });
 });

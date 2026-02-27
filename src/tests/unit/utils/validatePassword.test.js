@@ -1,4 +1,4 @@
-import validatePassword from "../../utils/validatePassword";
+import validatePassword from "../../../utils/validatePassword";
 
 describe("validatePassword()", () => {
   //Valid Password
