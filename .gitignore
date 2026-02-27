@@ -2,4 +2,5 @@
 /generated/prisma
 /node_modules
 .env
-/.vscodecoverage/
+.vscode/
+coverage/
