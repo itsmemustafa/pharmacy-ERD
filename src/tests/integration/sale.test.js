@@ -5,7 +5,7 @@ import prisma from "../../lib/prisma.js";
 import processSale from "../../services/saleTransaction.js";
 import jwt from "jsonwebtoken";
 
-// --- Mocks ---
+// Mocks
 jest.mock("../../lib/prisma.js", () => ({
     __esModule: true,
     default: {
@@ -23,9 +23,8 @@ jest.mock("jsonwebtoken", () => ({ verify: jest.fn() }));
 // Build test app with only the sale router
 const app = createTestApp([{ path: "/api/v1/sale", router: saleRouter }]);
 
-// ──────────────────────────────────────────
+
 // Helpers
-// ──────────────────────────────────────────
 const mockAuthUser = (role = "cashier") => {
     const fakeUser = { id: 1, name: "Test User", email: "t@t.com", role, isVerified: true };
     jwt.verify.mockReturnValue({ id: fakeUser.id });
@@ -39,9 +38,8 @@ const validSaleBody = {
     ],
 };
 
-// ──────────────────────────────────────────
+
 // Test Suites
-// ──────────────────────────────────────────
 describe("Sale Integration Tests", () => {
     beforeEach(() => jest.clearAllMocks());
 
