@@ -1,4 +1,4 @@
-import processSale from "../../services/sale.js";
+import processSale from "../../services/saleTransaction.js";
 import { BadRequestError } from "../../errors/index.js";
 
 const sale = async (req, res, next) => {

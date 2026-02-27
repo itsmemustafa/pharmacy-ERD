@@ -14,7 +14,11 @@
     "start": "nodemon app.js",
     "postinstall": "prisma generate",
     "jest": {
-      "testEnvironment": "node"
+      "testEnvironment": "node",
+      "transformIgnorePatterns": [
+        "/node_modules/",
+        "/generated/"
+      ]
     }
   },
   "prisma": {

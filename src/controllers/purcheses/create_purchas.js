@@ -1,5 +1,5 @@
 import prisma from "../../lib/prisma.js";
-import purchaseTransaction from "../../services/purchase.js";
+import purchaseTransaction from "../../services/purchaseTransaction.js";
 const createPurchase = async (req, res) => {
   const user_id = req.user.id;
   const { supplier_id, items } = req.body;
