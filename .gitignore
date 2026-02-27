@@ -4,3 +4,7 @@
 .env
 .vscode/
 coverage/
+project.context.md
+.gitignore
+.claude
+todo
