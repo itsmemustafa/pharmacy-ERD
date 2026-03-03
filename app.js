@@ -4,6 +4,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import hpp from "hpp";
 import errorHandlerMiddleware from "./src/middlewares/error-handler.js";
 import notFound from "./src/middlewares/not-found.js";
 import auth from "./src/routes/auth.js";
@@ -24,6 +25,7 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cookieParser());
+app.use(hpp());
 
 // Routes
 app.use("/api/v1/auth", auth);
