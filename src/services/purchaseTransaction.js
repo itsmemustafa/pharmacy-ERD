@@ -1,4 +1,4 @@
-import prisma from "../lib/prisma";
+import prisma from "../lib/prisma.js";
 
 const purchaseTransaction=async(items,user_id,supplier_id)=>{
   const itemsWithSubtotal = items.map((item) => ({
