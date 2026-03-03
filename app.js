@@ -5,6 +5,9 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import hpp from "hpp";
+import swaggerUi from "swagger-ui-express";
+
+import { openApiDocument } from "./openapi.js";
 import errorHandlerMiddleware from "./src/middlewares/error-handler.js";
 import notFound from "./src/middlewares/not-found.js";
 import auth from "./src/routes/auth.js";
@@ -27,6 +30,9 @@ app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(hpp());
 
+// Swagger UI (schema-first OpenAPI)
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openApiDocument));
+
 // Routes
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/suppliers", supplier);
@@ -44,4 +50,4 @@ app.use(errorHandlerMiddleware);
 // Route not found
 app.use(notFound);
 
-export default app; 
+export default app;
