@@ -49,3 +49,6 @@ export const CAN_SEARCH_MEDICINES = [
   ROLES.PHARMACIST,
   ROLES.CASHIER,
 ];
+
+/** Who can manage users (admin-only) */
+export const CAN_MANAGE_USERS = [ROLES.ADMIN];
