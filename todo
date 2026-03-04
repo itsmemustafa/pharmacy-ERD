@@ -12,14 +12,14 @@ todo:
 - add cascade/restricted to fk in schema (done)
 - add index for expire date in medicin_batch
 - password reset (done)
--validation (zod or something else) (done)
--notification system websocket 
--add testing(in-progress)
--add user management 
--file upload (csv to medicine )
--update the readme
+  -validation (zod or something else) (done)
+  -notification system websocket
+  -add testing(done)
+  -add user management
+  -file upload (csv to medicine )
+  -update the readme
 
-
+(done)
 tools to install:
 npm i hpp
 app.use(hpp())
@@ -30,4 +30,3 @@ npm i -D husky lint-staged
 npm i -D eslint prettier eslint-config-prettier
 npm i swagger-jsdoc swagger-ui-express
 pino
-

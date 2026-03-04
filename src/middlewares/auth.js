@@ -54,6 +54,7 @@ const authenticate = async (req, res, next) => {
         email: true,
         role: true,
         isVerified: true,
+        isActive: true,
       },
     });
 
@@ -75,11 +76,18 @@ const authenticate = async (req, res, next) => {
       );
     }
 
-    // Attach user to request and proceed
+    if (user.isActive === false) {
+      return next(
+        new CustomAPIError(
+          "Your account has been deactivated. Contact an administrator.",
+          StatusCodes.FORBIDDEN,
+        ),
+      );
+    }
+
     req.user = user;
     next();
   } catch (error) {
-    // Catch unexpected errors (e.g. Prisma failures) and forward to error middleware
     next(error);
   }
 };

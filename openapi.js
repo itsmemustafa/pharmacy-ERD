@@ -507,6 +507,150 @@ export const openApiDocument = {
         },
       },
     },
+    "/users": {
+      get: {
+        tags: ["Users"],
+        summary: "List users (admin only)",
+        description:
+          "Returns a paginated list of users. Only administrators can access this endpoint.",
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            in: "query",
+            name: "page",
+            schema: { type: "integer", minimum: 1 },
+            description: "Page number (default: 1)",
+          },
+          {
+            in: "query",
+            name: "limit",
+            schema: { type: "integer", minimum: 1, maximum: 100 },
+            description: "Page size (default: 10)",
+          },
+          {
+            in: "query",
+            name: "role",
+            schema: {
+              type: "string",
+              enum: ["admin", "pharmacist", "cashier"],
+            },
+            description: "Filter by role",
+          },
+          {
+            in: "query",
+            name: "email",
+            schema: { type: "string", format: "email" },
+            description: "Filter by partial email match",
+          },
+          {
+            in: "query",
+            name: "name",
+            schema: { type: "string" },
+            description: "Filter by partial name match",
+          },
+          {
+            in: "query",
+            name: "isActive",
+            schema: { type: "boolean" },
+            description: "Filter by active status",
+          },
+        ],
+        responses: {
+          200: {
+            description: "List of users",
+          },
+          403: {
+            description: "Forbidden - admin only",
+          },
+        },
+      },
+    },
+    "/users/{id}": {
+      get: {
+        tags: ["Users"],
+        summary: "Get user by ID (admin only)",
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            in: "path",
+            name: "id",
+            required: true,
+            schema: { type: "integer" },
+          },
+        ],
+        responses: {
+          200: {
+            description: "User data",
+          },
+          404: {
+            description: "User not found",
+          },
+          403: {
+            description: "Forbidden - admin only",
+          },
+        },
+      },
+      patch: {
+        tags: ["Users"],
+        summary: "Update a user (admin only)",
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            in: "path",
+            name: "id",
+            required: true,
+            schema: { type: "integer" },
+          },
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/AdminUpdateUser",
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: "User updated",
+          },
+          404: {
+            description: "User not found",
+          },
+          403: {
+            description: "Forbidden - admin only",
+          },
+        },
+      },
+      delete: {
+        tags: ["Users"],
+        summary: "Deactivate a user (admin only)",
+        description:
+          "Soft-deactivates a user account by setting isActive to false and revoking refresh tokens.",
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            in: "path",
+            name: "id",
+            required: true,
+            schema: { type: "integer" },
+          },
+        ],
+        responses: {
+          200: {
+            description: "User deactivated",
+          },
+          404: {
+            description: "User not found",
+          },
+          403: {
+            description: "Forbidden - admin only",
+          },
+        },
+      },
+    },
   },
   components: {
     schemas: {
@@ -643,6 +787,34 @@ export const openApiDocument = {
         required: ["query"],
         properties: {
           query: { type: "string", minLength: 1 },
+        },
+      },
+      UserSummary: {
+        type: "object",
+        properties: {
+          id: { type: "integer" },
+          name: { type: "string" },
+          email: { type: "string", format: "email" },
+          role: {
+            type: "string",
+            enum: ["admin", "pharmacist", "cashier"],
+          },
+          isVerified: { type: "boolean" },
+          isActive: { type: "boolean" },
+          created_at: { type: "string", format: "date-time" },
+        },
+      },
+      AdminUpdateUser: {
+        type: "object",
+        properties: {
+          name: { type: "string", minLength: 3, maxLength: 50 },
+          email: { type: "string", format: "email" },
+          role: {
+            type: "string",
+            enum: ["admin", "pharmacist", "cashier"],
+          },
+          isVerified: { type: "boolean" },
+          isActive: { type: "boolean" },
         },
       },
     },
