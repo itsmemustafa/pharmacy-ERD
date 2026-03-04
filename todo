@@ -2,22 +2,21 @@ AI integration ideas : (done)
 
 - Smart Search & Recommendations
   Natural language medicine search ("something for headache and fever")
-  Suggest alternative generics when brand isn't available
-  Recommend complementary medicines based on purchase patterns
 
 todo:
 -separate the services from the controller (done)
 -reporting system (done)
 
 - add cascade/restricted to fk in schema (done)
-- add index for expire date in medicin_batch
+
 - password reset (done)
   -validation (zod or something else) (done)
-  -notification system websocket
   -add testing(done)
-  -add user management
-  -file upload (csv to medicine )
-  -update the readme
+  -add user management (done)
+  -notification system websocket
+  - add index for expire date in medicin_batch
+    -file upload (csv to medicine )
+    -update the readme
 
 (done)
 tools to install:
