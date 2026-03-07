@@ -20,6 +20,12 @@ const login = async(req, res) => {
   if(!user.isVerified) {
     throw new CustomAPIError("Please verify your email before logging in");
   }
+  if (user.isActive === false) {
+    throw new CustomAPIError(
+      "Your account has been deactivated. Contact an administrator.",
+      StatusCodes.FORBIDDEN
+    );
+  }
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if(!isPasswordValid) {
     throw new UnauthenticatedError("Invalid credentials");
@@ -57,7 +63,7 @@ const login = async(req, res) => {
   });
 
   res.status(StatusCodes.OK).json({
-    user: {name: user.name, role: user.role,refreshToken}
+    user: { name: user.name, role: user.role },
   });
 }
 
