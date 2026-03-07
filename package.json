@@ -54,6 +54,7 @@
     "postgres": "^3.4.8",
     "swagger-autogen": "^2.23.7",
     "swagger-ui-express": "^5.0.1",
+    "express-rate-limit": "^8.3.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {

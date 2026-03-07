@@ -10,152 +10,6 @@ export const openApiDocument = {
       url: "/api/v1",
     },
   ],
-  components: {
-    securitySchemes: {
-      bearerAuth: {
-        type: "http",
-        scheme: "bearer",
-        bearerFormat: "JWT",
-      },
-    },
-    schemas: {
-      RegisterUser: {
-        type: "object",
-        required: ["name", "email", "password", "role"],
-        properties: {
-          name: { type: "string", minLength: 3, maxLength: 50 },
-          email: { type: "string", format: "email" },
-          password: { type: "string", minLength: 8, maxLength: 50 },
-          role: {
-            type: "string",
-            enum: ["admin", "pharmacist", "cashier"],
-          },
-        },
-      },
-      LoginUser: {
-        type: "object",
-        required: ["email", "password"],
-        properties: {
-          email: { type: "string", format: "email" },
-          password: { type: "string" },
-        },
-      },
-      ForgotPassword: {
-        type: "object",
-        required: ["email"],
-        properties: {
-          email: { type: "string", format: "email" },
-        },
-      },
-      ResetPassword: {
-        type: "object",
-        required: ["password", "confirmPassword"],
-        properties: {
-          password: { type: "string", minLength: 8, maxLength: 50 },
-          confirmPassword: { type: "string", minLength: 8, maxLength: 50 },
-        },
-      },
-      MedicineCreate: {
-        type: "object",
-        required: ["name", "generic_name", "price_sell", "min_quantity"],
-        properties: {
-          name: { type: "string", minLength: 3, maxLength: 100 },
-          generic_name: { type: "string", minLength: 3, maxLength: 100 },
-          price_sell: { type: "number", minimum: 0 },
-          min_quantity: { type: "integer", minimum: 0 },
-          requires_prescription: { type: "boolean" },
-        },
-      },
-      MedicineUpdate: {
-        type: "object",
-        properties: {
-          name: { type: "string", minLength: 3, maxLength: 100 },
-          generic_name: { type: "string", minLength: 3, maxLength: 100 },
-          price_sell: { type: "number", minimum: 0 },
-          min_quantity: { type: "integer", minimum: 0 },
-          requires_prescription: { type: "boolean" },
-        },
-      },
-      SupplierCreate: {
-        type: "object",
-        required: ["name", "phone", "email", "address"],
-        properties: {
-          name: { type: "string", minLength: 3, maxLength: 100 },
-          phone: { type: "string", minLength: 5, maxLength: 30 },
-          email: { type: "string", format: "email" },
-          address: { type: "string", minLength: 3, maxLength: 200 },
-        },
-      },
-      SupplierUpdate: {
-        type: "object",
-        properties: {
-          name: { type: "string", minLength: 3, maxLength: 100 },
-          phone: { type: "string", minLength: 5, maxLength: 30 },
-          email: { type: "string", format: "email" },
-          address: { type: "string", minLength: 3, maxLength: 200 },
-        },
-      },
-      PurchaseCreate: {
-        type: "object",
-        required: ["supplier_id", "items"],
-        properties: {
-          supplier_id: { type: "integer", minimum: 1 },
-          items: {
-            type: "array",
-            minItems: 1,
-            items: {
-              type: "object",
-              required: [
-                "medicine_id",
-                "batch_number",
-                "quantity",
-                "unit_price",
-                "expiry_Date",
-              ],
-              properties: {
-                medicine_id: { type: "integer", minimum: 1 },
-                batch_number: { type: "string", minLength: 1 },
-                quantity: { type: "integer", minimum: 1 },
-                unit_price: { type: "number", minimum: 0 },
-                expiry_Date: { type: "string", minLength: 4 },
-              },
-            },
-          },
-        },
-      },
-      SaleCreate: {
-        type: "object",
-        required: ["items"],
-        properties: {
-          payment_method: {
-            type: "string",
-            enum: ["cash", "credit_card", "debit_card", "insurance"],
-            default: "cash",
-          },
-          items: {
-            type: "array",
-            minItems: 1,
-            items: {
-              type: "object",
-              required: ["medicine_id", "quantity", "unit_price"],
-              properties: {
-                medicine_id: { type: "integer", minimum: 1 },
-                quantity: { type: "integer", minimum: 1 },
-                unit_price: { type: "number", minimum: 0 },
-              },
-            },
-          },
-        },
-      },
-      SearchQuery: {
-        type: "object",
-        required: ["query"],
-        properties: {
-          query: { type: "string", minLength: 1 },
-        },
-      },
-    },
-  },
   paths: {
     "/auth/sign-up": {
       post: {
@@ -653,18 +507,21 @@ export const openApiDocument = {
     },
   },
   components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "JWT",
+      },
+    },
     schemas: {
       RegisterUser: {
         type: "object",
-        required: ["name", "email", "password", "role"],
+        required: ["name", "email", "password"],
         properties: {
           name: { type: "string", minLength: 3, maxLength: 50 },
           email: { type: "string", format: "email" },
           password: { type: "string", minLength: 8, maxLength: 50 },
-          role: {
-            type: "string",
-            enum: ["admin", "pharmacist", "cashier"],
-          },
         },
       },
       LoginUser: {
