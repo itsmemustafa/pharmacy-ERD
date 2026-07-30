@@ -1,11 +1,13 @@
-import "dotenv/config";
+import "../loadEnv.js";
 import { PrismaClient } from "../../generated/prisma/client.ts";
 import { PrismaPg } from "@prisma/adapter-pg";
 
 const connectionString = process.env.DIRECT_URL;
 
 if (!connectionString) {
-  throw new Error("DIRECT_URL must be set in .env");
+  throw new Error(
+    "DIRECT_URL is not set. Create a .env file (see .env.example) and set your PostgreSQL connection string.",
+  );
 }
 
 const adapter = new PrismaPg({ connectionString });

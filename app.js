@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
-import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import hpp from "hpp";
 import swaggerUi from "swagger-ui-express";
@@ -18,8 +17,6 @@ import purchase from "./src/routes/purchase.js";
 import sale from "./src/routes/sale.js";
 import report from "./src/routes/reports.js";
 import search from "./src/routes/search.js";
-
-dotenv.config();
 
 const app = express();
 

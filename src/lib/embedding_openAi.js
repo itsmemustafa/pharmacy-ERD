@@ -1,6 +1,5 @@
 import OpenAI from "openai";
-import env from "dotenv";
-env.config();
+import "../loadEnv.js";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 

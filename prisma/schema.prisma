@@ -23,7 +23,7 @@ model User {
   purchases           PURCHASES[]
   sales               SALE[]
   token               Token?
-}
+} 
 
 model Token {
   id        Int      @id @default(autoincrement())

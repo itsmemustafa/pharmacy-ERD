@@ -1,7 +1,6 @@
+import "./src/loadEnv.js";
 import app from "./app.js";
 import prisma from "./src/lib/prisma.js";
-import env from "dotenv";
-env.config();
 
 const startServer = async () => {
   try {
