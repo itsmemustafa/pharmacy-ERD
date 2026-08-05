@@ -5,7 +5,7 @@ import signJwt from "../../utils/jwt-sign.js";
 import generateRefreshToken from "../../utils/refresh-token.js";
 import { StatusCodes } from "http-status-codes";
 import GenerateVerificationToken from "../../utils/GenerateVerificationToken.js";
-import sendVerificationEmail  from "../../utils/sendVerifyEmail.js";
+import sendVerificationEmail from "../../utils/sendVerifyEmail.js";
 import validatePassword from "../../utils/validatePassword.js";
 
 const signUp = async (req, res) => {
@@ -17,11 +17,11 @@ const signUp = async (req, res) => {
 
   // Validate password strength BEFORE doing anything else
   const passwordValidation = validatePassword(password);
-  
+
   if (!passwordValidation.isValid) {
     throw new CustomAPIError(
       passwordValidation.errors.join(". "),
-      StatusCodes.BAD_REQUEST
+      StatusCodes.BAD_REQUEST,
     );
   }
 
@@ -61,12 +61,12 @@ const signUp = async (req, res) => {
     const email_token = await GenerateVerificationToken(user);
     await sendVerificationEmail(email, email_token, name);
   } catch (error) {
-    // If email fails, delete the user and token
+    console.error("Verification email error:", error);
     await prisma.token.deleteMany({ where: { userId: user.id } });
     await prisma.user.delete({ where: { id: user.id } });
     throw new CustomAPIError(
       "Failed to send verification email. Please try again.",
-      StatusCodes.INTERNAL_SERVER_ERROR
+      StatusCodes.INTERNAL_SERVER_ERROR,
     );
   }
 
@@ -85,7 +85,8 @@ const signUp = async (req, res) => {
   });
 
   res.status(StatusCodes.CREATED).json({
-    message: "User created successfully. Please check your email to verify your account.",
+    message:
+      "User created successfully. Please check your email to verify your account.",
     passwordStrength: passwordValidation.strength.level, // Optional: return strength feedback
   });
 };

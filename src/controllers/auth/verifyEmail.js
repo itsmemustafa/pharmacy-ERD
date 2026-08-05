@@ -2,7 +2,7 @@ import crypto from "crypto";
 import prisma from "../../lib/prisma.js";
 import { CustomAPIError } from "../../errors/index.js";
 import { StatusCodes } from "http-status-codes";
-
+console.log("verifyEmail controller reached");
 const verifyEmail = async (req, res) => {
   const { token } = req.query;
 
