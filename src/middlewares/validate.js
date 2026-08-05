@@ -17,9 +17,10 @@ export const validateBody = (schema) => (req, res, next) => {
 
 export const validateQuery = (schema) => (req, res, next) => {
   const result = schema.safeParse(req.query);
+
   if (!result.success) return handleValidationError(result, next);
-  req.query = result.data;
+
+  req.validatedQuery = result.data;
   next();
 };
-
 export default validateBody;
