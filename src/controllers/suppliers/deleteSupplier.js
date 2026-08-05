@@ -15,6 +15,20 @@ const deleteSupplier = async (req, res) => {
     );
   }
 
+  //check if the supplier has any associated medicine batches
+  const batches = await prisma.MEDICINE_BATCHES.count({
+  where: {
+    supplier_id: Number(id),
+  },
+});
+
+if (batches > 0) {
+  throw new CustomAPIError(
+    "Cannot delete supplier because it has medicine batches",
+    StatusCodes.BAD_REQUEST
+  );
+}
+
   await prisma.supplier.delete({ where: { id: Number(id) } });
 
   res.status(StatusCodes.OK).json({

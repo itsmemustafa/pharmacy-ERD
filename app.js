@@ -26,7 +26,7 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cookieParser());
-app.use(hpp());
+// app.use(hpp());
 
 // Swagger UI (schema-first OpenAPI)
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openApiDocument));
